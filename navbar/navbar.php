@@ -12,6 +12,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="posttext.php">Post Content</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="postartical.php">Post Article</a>
+                    </li>
                 </ul>
             </div>
         </div>

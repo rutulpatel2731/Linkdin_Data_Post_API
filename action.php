@@ -42,3 +42,12 @@ if (isset($_POST['submit'])) {
         header('location:posttext.php');
     }
 }
+
+if(isset($_POST['submitArticle'])){
+    $blogTitle = $_POST['blogTitle'];
+    $blogContent = $_POST['blogContent'];
+    $blogUrl = $_POST['blogUrl'];
+    $tags = $_POST['tags'];
+    $tags = $tags . "#" .$tags;
+    echo $tags;
+}
