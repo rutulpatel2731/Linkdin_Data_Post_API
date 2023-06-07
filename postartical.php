@@ -12,14 +12,6 @@ include 'session.php';
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-    <!-- <style type="text/css">
-        .bootstrap-tagsinput .tag {
-            margin-right: 2px;
-            color: white !important;
-            background-color: #0d6efd;
-            padding: 0.2rem;
-        }
-    </style> -->
 </head>
 
 <body>
@@ -52,20 +44,23 @@ include 'session.php';
                 </form>
 
                 <?php
-                if (isset($_SESSION['message']) && isset($_SESSION['postStatus'])) {
-                    if (isset($_SESSION['postStatus']) === "true") {
+                if (isset($_SESSION['articleMsg']) || isset($_SESSION['articleStatus'])) {
+
+                    if ($_SESSION['articleStatus'] == true) {
+
                         echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
-                        <strong>' . $_SESSION['message'] . '</strong>
+                        <strong>' . $_SESSION['articleMsg'] . '</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
                     } else {
+                        // print_r($_SESSION['articleMsg']);
                         echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                        <strong>' . $_SESSION['message'] . '</strong>
+                        <strong>' . $_SESSION['articleMsg'] . '</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
                     }
-                    unset($_SESSION['message']);
-                    unset($_SESSION['postStatus']);
+                    unset($_SESSION['articleMsg']);
+                    unset($_SESSION['articleStatus']);
                 }
                 ?>
             </div>
