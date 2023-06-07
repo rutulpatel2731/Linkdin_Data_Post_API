@@ -18,6 +18,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="postimage.php">Post Image</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="postmultipleimage.php">Post Multiple Image</a>
+                    </li>
                 </ul>
             </div>
         </div>
