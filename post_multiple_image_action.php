@@ -9,6 +9,18 @@ function postImgsResponse($msg, $status)
 if (isset($_POST['submit'])) {
     $content = $_POST['content'];
     $content = str_replace("\r\n", "\\n", $content);
+
+    $image = $_FILES['image']['name'];
+    if (empty($content)) {
+        $_SESSION['contentErr'] = "Please Enter Content";
+        header('location:postmultipleimage.php');
+    }
+    $allowType = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!in_array($_FILES['image']['type'], $allowType)) {
+        $_SESSION['imageErr'] = "Invalid Image Select Only JPG , PNG , JPEG format..";
+        header('location:postmultipleimage.php');
+    }
+
     $header = array(
         "Content-Type: application/json",
         "X-Restli-Protocol-Version: 2.0.0",
@@ -16,23 +28,23 @@ if (isset($_POST['submit'])) {
     );
     $url = "https://api.linkedin.com/v2/assets?action=registerUpload";
     $data = '
-{
-    "registerUploadRequest": {
-        "recipes": [
-            "urn:li:digitalmediaRecipe:feedshare-image"
-        ],
-        "owner": "urn:li:person:' . $_SESSION['personId'] . '",
-        "serviceRelationships": [
-            {
-                "relationshipType": "OWNER",
-                "identifier": "urn:li:userGeneratedContent"
-            }
-        ]
-    }
-}';
+    {
+        "registerUploadRequest": {
+            "recipes": [
+                "urn:li:digitalmediaRecipe:feedshare-image"
+            ],
+            "owner": "urn:li:person:' . $_SESSION['personId'] . '",
+            "serviceRelationships": [
+                {
+                    "relationshipType": "OWNER",
+                    "identifier": "urn:li:userGeneratedContent"
+                }
+            ]
+        }
+    }';
     $mediaAsset = [];
     $ch = curl_init();
- 
+
     for ($i = 0; $i < count($_FILES['image']["tmp_name"]); $i++) {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -52,8 +64,7 @@ if (isset($_POST['submit'])) {
             "title" => array(
                 "text" => "LinkedIn Talent Connect 2021"
             )
-        ));
-         {
+        )); {
             $header = array(
                 "Content-Type: multipart/form-data",
                 "X-Restli-Protocol-Version: 2.0.0",
@@ -68,28 +79,26 @@ if (isset($_POST['submit'])) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             $result = curl_exec($ch);
         }
-
-        
     }
 
     $data = '{
-            "author": "urn:li:person:' . $_SESSION['personId'] . '",
-            "lifecycleState": "PUBLISHED",
-            "specificContent": {
-                "com.linkedin.ugc.ShareContent": {
-                    "shareCommentary": {
-                        "text": "' . $content . '"
-                    },
-                    "shareMediaCategory": "IMAGE",
-                    "media": 
-                      ' . json_encode($mediaAsset) . '
+                "author": "urn:li:person:' . $_SESSION['personId'] . '",
+                "lifecycleState": "PUBLISHED",
+                "specificContent": {
+                    "com.linkedin.ugc.ShareContent": {
+                        "shareCommentary": {
+                            "text": "' . $content . '"
+                        },
+                        "shareMediaCategory": "IMAGE",
+                        "media": 
+                          ' . json_encode($mediaAsset) . '
+                    }
+                },
+                "visibility": {
+                    "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
                 }
-            },
-            "visibility": {
-                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
-            }
-        }';
-        echo $data;
+            }';
+    echo $data;
     $header = array(
         "Content-Type: application/json",
         "X-Restli-Protocol-Version: 2.0.0",

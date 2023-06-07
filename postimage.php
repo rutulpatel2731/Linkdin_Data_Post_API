@@ -25,10 +25,24 @@ include 'session.php';
                         <label for="" class="my-4">Enter your content here</label>
                         <textarea class="form-control" name="content" cols="10" rows="4"></textarea>
                     </div>
+                    <span class="error-msg"><?php
+                                            if (isset($_SESSION['content_err'])) {
+                                                echo '<p>' . $_SESSION['content_err'] . '</p>';
+                                                unset($_SESSION['content_err']);
+                                            }
+                                            ?>
+                    </span>
                     <div class="form-group">
                         <label for="" class="my-4">Enter your content here</label>
                         <input type="file" class="form-control" name="image">
                     </div>
+                    <span class="error-msg"><?php
+                                            if (isset($_SESSION['image_err'])) {
+                                                echo '<p>' . $_SESSION['image_err'] . '</p>';
+                                                unset($_SESSION['image_err']);
+                                            }
+                                            ?>
+                    </span>
                     <div class="text-center mt-4">
                         <button type="submit" name="submit" class="btn btn-success">Submit</button>
                     </div>

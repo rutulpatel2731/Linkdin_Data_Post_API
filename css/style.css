@@ -4,3 +4,7 @@
     box-sizing: border-box;
 }
 
+.error-msg p{
+    color: red;
+    margin-top: 10px;
+}

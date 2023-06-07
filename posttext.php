@@ -25,6 +25,14 @@ include 'session.php';
                         <label for="" class="my-4">Enter your content here</label>
                         <textarea class="form-control" name="content" cols="10" rows="4"></textarea>
                     </div>
+                    <span class="error-msg">
+                        <?php
+                        if(isset($_SESSION['content'])){
+                            echo '<p>'.$_SESSION['content'].'</p>';
+                        unset($_SESSION['content']);
+                        }
+                        ?>
+                    </span>
                     <div class="text-center mt-4">
                         <button type="submit" name="submit" class="btn btn-success">Submit</button>
                     </div>

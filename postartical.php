@@ -26,18 +26,46 @@ include 'session.php';
                         <label for="" class="my-4">Enter Blog Title</label>
                         <input type="text" class="form-control" name="blogTitle" placeholder="Enter Blog Title">
                     </div>
+                    <span class="error-msg"><?php
+                                            if (isset($_SESSION['title_error'])) {
+                                                echo '<p>' . $_SESSION['title_error'] . '</p>';
+                                                unset($_SESSION['title_error']);
+                                            }
+                                            ?>
+                    </span>
                     <div class="form-group my-3s">
                         <label for="" class="my-4">Enter Blog Content Here</label>
                         <textarea class="form-control" name="blogContent" cols="10" rows="4"></textarea>
                     </div>
+                    <span class="error-msg"><?php
+                                            if (isset($_SESSION['blogcontent_error'])) {
+                                                echo '<p>' . $_SESSION['blogcontent_error'] . '</p>';
+                                                unset($_SESSION['blogcontent_error']);
+                                            }
+                                            ?>
+                    </span>
                     <div class="form-group my-3s">
                         <label for="" class="my-4">Enter Blog URL Here</label>
-                        <input type="text" class="form-control" name="blogUrl" placeholder="Enter Blog Title">
+                        <input type="text" class="form-control" name="blogUrl" placeholder="Enter Blog URL">
                     </div>
+                    <span class="error-msg"><?php
+                                            if (isset($_SESSION['blogurl_error'])) {
+                                                echo '<p>' . $_SESSION['blogurl_error'] . '</p>';
+                                                unset($_SESSION['blogurl_error']);
+                                            }
+                                            ?>
+                    </span>
                     <div class="form-group">
                         <label for="" class="my-4">Enter Tags Here</label>
-                        <input name='tags' class="form-control" autofocus>
+                        <input name='tags' class="form-control" placeholder="Enter Tags Here">
                     </div>
+                    <span class="error-msg"><?php
+                                            if (isset($_SESSION['tags_error'])) {
+                                                echo '<p>' . $_SESSION['tags_error'] . '</p>';
+                                                unset($_SESSION['tags_error']);
+                                            }
+                                            ?>
+                    </span>
                     <div class="text-center mt-4">
                         <button type="submit" name="submitArticle" class="btn btn-success">Submit</button>
                     </div>

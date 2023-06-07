@@ -13,57 +13,80 @@ function articleResponse($msg, $status)
     $_SESSION['articleStatus'] = $status;
     header('location:postartical.php');
 }
-echo isset($_POST['submit']);
-echo isset($_POST['submitArticle']);
+
+
 if (isset($_POST['submit'])) {
     $contentData = $_POST['content'];
-    $contentData = str_replace("\r\n","\\n",$contentData);
-    $url = "https://api.linkedin.com/v2/ugcPosts";
-    $header = array(
-        "Content-Type: application/json",
-        "X-Restli-Protocol-Version: 2.0.0",
-        "Authorization: Bearer " . $_SESSION['accessToken']
-    );
-    $data = '
-    {
-        "author": "urn:li:person:' . $_SESSION['personId'] . '",
-        "lifecycleState": "PUBLISHED",
-        "specificContent": {
-            "com.linkedin.ugc.ShareContent": {
-                "shareCommentary": {
-                    "text": "' . $contentData . '"
-                },
-                "shareMediaCategory": "NONE"
-            }
-        },
-        "visibility": {
-            "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
-        }
-    }';
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    $result = curl_exec($ch);
-    $result = json_decode($result);
-    if (property_exists($result, "id")) {
-        response("Post Successfully..", true);
+    if (empty($_POST['content'])) {
+        $_SESSION['content'] = "Please Enter Content Here";
+        header('location:posttext.php');
     } else {
-        response("Something Went Wrong.", false);
+        $contentData = str_replace("\r\n", "\\n", $contentData);
+        $url = "https://api.linkedin.com/v2/ugcPosts";
+        $header = array(
+            "Content-Type: application/json",
+            "X-Restli-Protocol-Version: 2.0.0",
+            "Authorization: Bearer " . $_SESSION['accessToken']
+        );
+        $data = '
+        {
+            "author": "urn:li:person:' . $_SESSION['personId'] . '",
+            "lifecycleState": "PUBLISHED",
+            "specificContent": {
+                "com.linkedin.ugc.ShareContent": {
+                    "shareCommentary": {
+                        "text": "' . $contentData . '"
+                    },
+                    "shareMediaCategory": "NONE"
+                }
+            },
+            "visibility": {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+            }
+        }';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        $result = curl_exec($ch);
+        $result = json_decode($result);
+        if (property_exists($result, "id")) {
+            response("Post Successfully..", true);
+        } else {
+            response("Something Went Wrong.", false);
+        }
+        if (curl_errno($ch)) {
+            curl_error($ch);
+        }
+        curl_close($ch);
     }
-    if (curl_errno($ch)) {
-        curl_error($ch);
-    }
-    curl_close($ch);
 } else if (isset($_POST['submitArticle'])) {
     $blogTitle = $_POST['blogTitle'];
     $blogContent = trim($_POST['blogContent']);
-    $blogContent = str_replace("\r\n","\\n",$blogContent);
+    $blogContent = str_replace("\r\n", "\\n", $blogContent);
     $blogUrl = $_POST['blogUrl'];
     $tags = $_POST['tags'];
+
+    if (empty($blogTitle)) {
+        $_SESSION['title_error'] = "Please Enter Blog Title";
+        header('location:postartical.php');
+    }
+    if (empty($blogContent)) {
+        $_SESSION['blogcontent_error'] = "Please Content Of blog";
+        header('location:postartical.php');
+    }
+    if (empty($blogUrl)) {
+        $_SESSION['blogurl_error'] = "Please Enter Blog URL";
+        header('location:postartical.php');
+    }
+    if (empty($tags)) {
+        $_SESSION['tags_error'] = "Please Enter Tag";
+        header('location:postartical.php');
+    }
     $tags = json_decode($tags, true);
     $values = array();
     for ($i = 0; $i < count($tags); $i++) {
