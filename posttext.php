@@ -31,13 +31,20 @@ include 'session.php';
                 </form>
 
                 <?php
-                if (isset($_SESSION['successMsg'])) {
-                    echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
-                    <strong>'.$_SESSION['successMsg'].'</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-
-                    unset($_SESSION['successMsg']);
+                if (isset($_SESSION['message']) && isset($_SESSION['postStatus'])) {
+                    if ($_SESSION['postStatus'] == true) {
+                        echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                        <strong>' . $_SESSION['message'] . '</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+                    }else{
+                        echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                        <strong>' . $_SESSION['message'] . '</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+                    }
+                    unset($_SESSION['message']);
+                    unset($_SESSION['postStatus']);
                 }
                 ?>
 

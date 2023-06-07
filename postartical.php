@@ -12,14 +12,14 @@ include 'session.php';
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
+    <!-- <style type="text/css">
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: white !important;
             background-color: #0d6efd;
             padding: 0.2rem;
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -50,6 +50,24 @@ include 'session.php';
                         <button type="submit" name="submitArticle" class="btn btn-success">Submit</button>
                     </div>
                 </form>
+
+                <?php
+                if (isset($_SESSION['message']) && isset($_SESSION['postStatus'])) {
+                    if (isset($_SESSION['postStatus']) === "true") {
+                        echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                        <strong>' . $_SESSION['message'] . '</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+                    } else {
+                        echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                        <strong>' . $_SESSION['message'] . '</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+                    }
+                    unset($_SESSION['message']);
+                    unset($_SESSION['postStatus']);
+                }
+                ?>
             </div>
         </div>
     </section>
