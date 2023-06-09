@@ -9,18 +9,11 @@ function postImgResponse($msg, $status)
 if (isset($_POST['submit'])) {
     $content = $_POST['content'];
     $image = $_FILES['image']['name'];
-
-    if (empty($content)) {
-        $_SESSION['content_err'] = "Please Enter Content";
-        header('location:postimage.php');
-    }
     $allowType = ['image/jpeg', 'image/jpg', 'image/png'];
-    if (empty($_FILES['image']['name'])) {
-        $_SESSION['image_err'] = "Please Select Image";
-        header('location: postimage.php');
-    } else if (!in_array($_FILES['image']['type'], $allowType)) {
-        $_SESSION['image_err'] = "Invalid Image Select Only JPG , PNG , JPEG format..";
-        header('location: postimage.php');
+    if (empty($content) && empty($_FILES['image']['name']) &&(!in_array($_FILES['image']['type'], $allowType))) {
+        $_SESSION['content_err'] = "Please Enter Content";
+        $_SESSION['image_err'] = "Please Select JPG , PNG , JPEG format..";
+        header('location:postimage.php');
     } else {
         $content = str_replace("\r\n", "\\n", $content);
         $header = array(

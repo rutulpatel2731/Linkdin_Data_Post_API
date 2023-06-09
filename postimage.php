@@ -34,7 +34,7 @@ include 'session.php';
                     </span>
                     <div class="form-group">
                         <label for="" class="my-4">Enter your content here</label>
-                        <input type="file" class="form-control" name="image">
+                        <input type="file" class="form-control" name="image" accept="image/*">
                     </div>
                     <span class="error-msg"><?php
                                             if (isset($_SESSION['image_err'])) {
